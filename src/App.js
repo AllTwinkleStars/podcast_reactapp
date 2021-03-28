@@ -23,10 +23,13 @@ class App extends React.Component {
   getPodcast = async (term) => {
     term = term.toString().replace(/[^a-zA-Z0-9]/g, ' ');
     const url = `https://itunes.apple.com/search?term=${term}&entity=podcast`
-    const cors = 'https://cors-anywhere.herokuapp.com/'
+    //const cors = 'https://cors-anywhere.herokuapp.com/'
 
-    const result = await fetch(cors+url)
+    const result = await fetch(url)
     const items = await result.json()
+    console.log(items);
+
+
     this.setState({
       podcasts: items.results,
       tracks: undefined
