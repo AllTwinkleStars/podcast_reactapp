@@ -43,7 +43,7 @@ class App extends React.Component {
 
     const result1 = await fetch(`https://itunes.apple.com/lookup?id=${id}&entity=podcast`)
     const items1 = await result1.json()
-    const result2 = await fetch(cors+items1.results[0].feedUrl)
+    const result2 = await fetch(items1.results[0].feedUrl)
     const text = await result2.text()
 
     const podcastDocument = new DOMParser().parseFromString(
