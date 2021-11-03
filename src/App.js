@@ -25,7 +25,7 @@ class App extends React.Component {
     const url = `https://cors.bridged.cc/https://itunes.apple.com/search?term=${term}&entity=podcast`
     const cors = 'https://cors-anywhere.herokuapp.com/'
 
-    const result = await fetch(url)
+    const result = await fetch(`https://itunes.apple.com/search?term=${term}&entity=podcast`)
     const items = await result.json()
     console.log(items);
 
