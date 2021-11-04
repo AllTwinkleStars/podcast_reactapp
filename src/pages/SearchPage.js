@@ -17,6 +17,7 @@ export default ({podcasts, getPodcast, setSelectedPodcast}) => {
               </Typography>
             </Grid>
         </Grid>
+        
     </Grid>
 
     );

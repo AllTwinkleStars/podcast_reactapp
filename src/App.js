@@ -25,7 +25,15 @@ class App extends React.Component {
     const url = `https://cors.bridged.cc/https://itunes.apple.com/search?term=${term}&entity=podcast`
     const cors = 'https://cors-anywhere.herokuapp.com/'
 
-    const result = await fetch(`https://itunes.apple.com/search?term=${term}&entity=podcast`)
+    const result = await fetch(
+      url,
+      {
+        mode: 'cors', 
+        headers: {
+          'x-cors-grida-api-key': '32832479-b3b1-4f24-aa44-4ab02ccb1eb7',
+        },
+      }
+      )
     const items = await result.json()
     console.log(items);
 
@@ -40,7 +48,15 @@ class App extends React.Component {
   setSelectedPodcast = async (podcast) => {
     const id = podcast.trackId
     const cors = 'https://cors-anywhere.herokuapp.com/'
-    const result1 = await fetch(`https://cors.bridged.cc/https://itunes.apple.com/lookup?id=${id}&entity=podcast`)
+    const result1 = await fetch(
+      `https://cors.bridged.cc/https://itunes.apple.com/lookup?id=${id}&entity=podcast`, 
+      {
+        mode: 'cors', 
+        headers: {
+          'x-cors-grida-api-key': '32832479-b3b1-4f24-aa44-4ab02ccb1eb7',
+        },
+      }
+    )
     const items1 = await result1.json()
     const result2 = await fetch(items1.results[0].feedUrl)
     const text = await result2.text()
