@@ -3,8 +3,7 @@ import React from "react";
 
 export default ({selectedPodcast}) => {
   const style = {
-      width:"30vw",
-      marginLeft: 'auto',
+      width:"65vw",
   };
   return (
         <ReactAudioPlayer
