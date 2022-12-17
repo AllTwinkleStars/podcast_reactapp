@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import {
   Grid,
@@ -10,6 +10,7 @@ import {
   Avatar,
   Typography,
 } from "@material-ui/core";
+//import { TableFooter } from "@mui/material";
 import { DOMParser } from "xmldom";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -20,6 +21,7 @@ import {
   AudioPlayer,
 } from "./pages";
 import SignupDialog from "./pages/components/SignupDialog";
+import * as api from "./api";
 
 const App = () => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -27,13 +29,14 @@ const App = () => {
   const [selectedPodcast, setSelectedPodcast] = useState(undefined);
   const [tracks, setTracks] = useState([]);
   const [selectedTrackUrl, setSelectedTrackUrl] = useState(undefined);
-  const [subscriptions, setSubscriptions] = useState(
-    []
-    //JSON.parse(localStorage.getItem("profile"))?.userData?.subscriptions
-  );
   const [isSignupDialogOpen, setIsSignupDialogOpen] = useState(false);
 
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile"))?.userData);
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("profile"))?.userData
+  );
+  const [subscriptions, setSubscriptions] = useState(
+    JSON.parse(localStorage.getItem("profile"))?.userData.subscriptions
+  );
 
   const getPodcasts = async (term) => {
     term = term.toString().replace(/[^a-zA-Z0-9]/g, " ");
@@ -94,7 +97,8 @@ const App = () => {
     setSelectedTab(newValue);
   };
 
-  const toggleSubscription = (subscribe, podcast) => {
+  const toggleSubscription = async (subscribe, podcast) => {
+    console.log(subscribe)
     let newSubs = subscriptions;
     if (subscribe) {
       newSubs.push(podcast);
@@ -104,6 +108,8 @@ const App = () => {
       });
     }
     // make api call -> find the current user's document and update its subscriptions field
+    const { data } = await api.updateSubs(user._id, newSubs);
+    console.log(data);
     setSubscriptions(newSubs);
     alert(
       `${subscribe ? "Added" : "Removed"} "${podcast.collectionName}" ${
@@ -123,15 +129,20 @@ const App = () => {
   const logout = () => {
     setUser(null);
     localStorage.clear();
-  }
+  };
 
-  // getUserSubscriptions = async () => {
-  //   return await api.findUser(this.state.currentUser._id).subscriptions;
-  // };
+  const subscribed = selectedPodcast
+    ? subscriptions.findIndex(
+        (podcast) => {
+          console.log(podcast.collectionId, selectedPodcast.collectionId) 
+          return podcast.collectionId === selectedPodcast.collectionId
+        }
+      ) !== -1
+    : false;
+  console.log({ subscriptions });
+  console.log({ selectedPodcast });
+  console.log(subscribed);
 
-  // //const subscriptions = this.getUserSubscriptions();
-
-  const subscribed = subscriptions?.includes(selectedPodcast);
   return (
     <>
       <AppBar position="sticky">
@@ -141,12 +152,9 @@ const App = () => {
             <Tab label="Episodes" />
             <Tab label="Subscriptions" />
           </Tabs>
-          <AudioPlayer selectedPodcast={selectedTrackUrl} />
           {user ? (
             <>
-              <Avatar alt={user?.name}>
-                {user?.name.charAt(0)}
-              </Avatar>
+              <Avatar alt={user?.name}>{user?.name.charAt(0)}</Avatar>
               <Typography variant="h6">{user?.name}</Typography>
               <Button variant="contained" color="secondary" onClick={logout}>
                 Logout
@@ -189,6 +197,7 @@ const App = () => {
             tracks={tracks}
             onClickTrack={setSelectedTrack}
             toggleSubscription={toggleSubscription}
+            loggedIn={!!user}
           />
         )}
         {selectedTab === 2 && (
@@ -199,6 +208,17 @@ const App = () => {
           />
         )}
       </Grid>
+      {/* <AppBar color="primary" sx={{ postion: "fixed", bottom: 0 }}></AppBar> */}
+      <div
+        style={{
+          position: "fixed",
+          bottom: "0",
+          width: "100%",
+          textAlign: "center",
+        }}
+      >
+        <AudioPlayer selectedPodcast={selectedTrackUrl} />
+      </div>
     </>
   );
 };

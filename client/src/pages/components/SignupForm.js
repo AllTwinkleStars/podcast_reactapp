@@ -46,9 +46,9 @@ const SignupForm = ({ handleClose, setUser}) => {
     } else {
       const { data } = await api.signIn(userData);
       localStorage.setItem("profile", JSON.stringify({ ...data }));
+      //localStorage.setItem("subscriptions", JSON.stringify({ ...data.subscriptions }));
       console.log(data);
     }
-    console.log('setting user')
     setUser(JSON.parse(localStorage.getItem("profile"))?.userData)
     handleClose();
   };

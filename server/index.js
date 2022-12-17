@@ -1,15 +1,19 @@
 import express from "express"; //framework to create routing
 import bodyParser from "body-parser"; //enable us to send post request 
-import mongoose from "mongoose"; //create models for our post
+import mongoose from "mongoose"; //create models for app users
 import cors from "cors"; //enable cross origin request
 
-import postRoutes from "./routes/users.js"
+import userRoutes from "./routes/users.js"
+//import subscriptionsRoutes from "./routes/subscriptions.js";
 
 const app = express(); //do this w every express app
 
-app.use('/posts', postRoutes) 
+app.use(bodyParser.json({ limit: "30mb", extended: true }));
+app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
+app.use(cors())
 
-app.use(cors());
+app.use('/user', userRoutes) 
+//app.use("/subscriptions", subscriptionsRoutes); 
 
 //connect server to mongoDB atlas
 const CONNECTION_URL =
