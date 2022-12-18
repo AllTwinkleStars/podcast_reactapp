@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Grid,
   Switch,
@@ -70,31 +70,35 @@ export default ({
           </Typography>
         </Grid>
         <Grid item>
-          {loggedIn ? (
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={subscribed}
-                  onChange={() => {
-                    toggleSubscription(!subscribed, selectedPodcast);
-                  }}
-                />
-              }
-              label="Subscribe"
-              style={{ marginTop: "15px" }}
-            />
-          ) : (
-            <Typography variant="subtitle1">
-              Sign in to subscribe to your favourite podcasts
-            </Typography>
-          )}
+          <FormControlLabel
+            control={
+              <Switch
+                checked={subscribed}
+                disabled={!loggedIn}
+                onChange={() => {
+                  toggleSubscription(!subscribed, selectedPodcast);
+                }}
+              />
+            }
+            label="Subscribe"
+            style={{ marginTop: "15px" }}
+          />
         </Grid>
       </Grid>
+
+      {!loggedIn && (
+        <Grid item container xs={8} justify="center">
+          <Typography variant="subtitle1">
+            Sign in to enable podcast subscription feature!
+          </Typography>
+        </Grid>
+      )}
+
       <Grid item xs={12} style={{ margin: "-10px" }}></Grid>
 
-      <Grid item>
+      <Grid item style={{ marginBottom: "100px" }}>
         <Typography variant="h5" style={{ marginBottom: "10px" }}>
-          All Episodes
+          Episodes
         </Typography>
         <TrackList tracks={tracks} onTrackSelect={onClickTrack} />
       </Grid>

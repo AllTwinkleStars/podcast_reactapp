@@ -4,7 +4,7 @@ import PodcastList from "./components/PodcastList";
 
 const SubscriptionsPage = ({
   subscriptions,
-  setSelectedPodcast,
+  handleOnSelectPodcast,
   isSignedIn,
 }) => {
   console.log(subscriptions);
@@ -13,7 +13,7 @@ const SubscriptionsPage = ({
       <PodcastList
         isSubscriptionList={true}
         podcasts={subscriptions}
-        onPodcastSelect={setSelectedPodcast}
+        onPodcastSelect={handleOnSelectPodcast}
       />
     </Grid>
   ) : (

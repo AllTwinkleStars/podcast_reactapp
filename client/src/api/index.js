@@ -1,17 +1,32 @@
 import axios from "axios";
 
-const url = "http://localhost:5000/user";
+const API = axios.create({ baseURL: "http://localhost:5000" });
 
-// export const addSub = (id) => axios.patch(`/posts/${id}/likePost`);
-// export const removeSub = (id) => axios.delete(`/posts/${id}`);
+//the function we pass into API.interceptors.request.use() is run before any axios request
+//add token to req.headers
+API.interceptors.request.use((req) => {
+  if (localStorage.getItem("profile")) {
+    req.headers.Authorization = `Bearer ${
+      JSON.parse(localStorage.getItem("profile")).token
+    }`;
+  }
+  return req;
+});
 
 const signIn = (userData) => {
-  console.log("inside sign in function");
-  return axios.post(`${url}/signin`, userData);
+  return API.post("/user/signin", userData);
 };
-const signUp = (userData) => axios.post(`${url}/signup`, userData);
-const updateSubs = (id, subscriptions) => {
-  return axios.patch(`${url}/subscriptions`, {id, subscriptions});
+const signUp = (userData) => API.post("/user/signup", userData);
+
+const getSubs = (email) => {
+  return API.get(`/subscriptions`, {
+  params: {
+   email
+  }});
 };
 
-export { signIn, signUp, updateSubs };
+const updateSubs = (email, subscriptions) => {
+  return API.patch("/subscriptions", { email, subscriptions });
+};
+
+export { signIn, signUp, getSubs, updateSubs };

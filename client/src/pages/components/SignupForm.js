@@ -42,12 +42,9 @@ const SignupForm = ({ handleClose, setUser}) => {
     if (isSignup) {
       const { data } = await api.signUp(userData);
       localStorage.setItem("profile", JSON.stringify({ ...data }));
-      console.log(data);
     } else {
       const { data } = await api.signIn(userData);
       localStorage.setItem("profile", JSON.stringify({ ...data }));
-      //localStorage.setItem("subscriptions", JSON.stringify({ ...data.subscriptions }));
-      console.log(data);
     }
     setUser(JSON.parse(localStorage.getItem("profile"))?.userData)
     handleClose();
