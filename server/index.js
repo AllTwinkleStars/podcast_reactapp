@@ -23,7 +23,7 @@ app.use("/subscriptions", subscriptionsRoutes);
 
 //connect server to mongoDB atlas
 const CONNECTION_URL =
-  "mongodb+srv://user1:2020EnjoyLife@cluster0.zrmcvnc.mongodb.net/?retryWrites=true&w=majority";
+  "mongodb+srv://user1:test@cluster0.zrmcvnc.mongodb.net/?retryWrites=true&w=majority";
 const PORT = process.env.PORT || 5000;
 
 mongoose
