@@ -5,7 +5,7 @@ import { makeStyles, Grid, Typography,Card, CardActionArea, CardMedia, CardConte
 export default ({podcast, onPodcastSelect}) => {
   const useStyles = makeStyles({
     root: {
-      minHeight: '325px',
+      minHeight: '350px',
       width: "100%"
     },
     actionArea: {
@@ -13,7 +13,7 @@ export default ({podcast, onPodcastSelect}) => {
     },
     media: {
       height: 0,
-      paddingTop: '70%',
+      paddingTop: '75%',
       marginTop:'30'
     },
     
